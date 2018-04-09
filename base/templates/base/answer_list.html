@@ -60,8 +60,9 @@
               <th scope="col">User</th>
               <th scope="col">Emotion</th>
               <th scope="col">Intensity</th>
+              <th scope="col">Other</th>
               <th scope="col">Datetime</th>
-              <th scope="col">Actions</th>
+             <!-- <th scope="col">Actions</th> -->
             </tr>
           </thead>
           <tbody>
@@ -75,10 +76,11 @@
               <td>{{ answer.created_by}}</td>
               <td>{{ answer.get_emotion_display }}</td>
               <td>{{ answer.intensity }}</td>
+              <td>{{ answer.note }}</td>
               <td>{{ answer.date }}</td>
-              <td>
+             <!-- <td>
                 <button class='btn btn-default btn-sm'>delete</button>
-              </td>
+              </td> -->
             </tr>
           {% endfor %}
             

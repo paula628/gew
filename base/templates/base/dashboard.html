@@ -77,7 +77,7 @@
                                             <td> 9</td>
                                             <td>{{ q.date }}</td>
                                             <td>Joy</td>
-                                            <td> <a href="#"  class="btn btn-xs btn-info" >View</a> </td>
+                                            <td> <a href="{% url 'base:answer_list_by_filter' mode='question' mode_id=q.id %}"  class="btn btn-xs btn-info" >View</a> </td>
                                         </tr>
                                       {% endfor %}
                                     </tbody>
@@ -89,7 +89,7 @@
 
 
 
-                      <div class="notice-board">
+                   <!--   <div class="notice-board">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                            Active  Notice Panel 
@@ -147,7 +147,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--<hr />
+                    <hr />
                     <div class="text-center alert alert-warning">
                         <a href="#" class="btn btn-social btn-facebook">
                             <i class="fa fa-facebook"></i>&nbsp; Facebook</a>
