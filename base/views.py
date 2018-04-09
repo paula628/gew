@@ -37,9 +37,10 @@ def login(request):
                 request.session.set_expiry(6000)
                 return redirect('base:dashboard')
         elif code:
-            question = get_object_or_None(Question, code=code)
-            context.update({'question':question})
-            if question:
+            questions = Question.objects.filter(code=code, status='open', is_active=True)
+            if questions and questions.count() ==1:
+                question = questions[0]
+                context.update({'question':question})
                 if not question.allow_anonymous:
                     student_id = request.POST.get('student', None)
                     student = get_object_or_None(TempUser, id=student_id, user_type='s')
@@ -52,6 +53,9 @@ def login(request):
                         return render(request, 'base/login_form.html', context)
                 url = reverse('base:answer_page', args=[question.id])
                 return redirect(url)
+            else:
+                msg = "Error! Either the session does not exist or it is already closed."
+                messages.error(request, msg)
     return render(request, 'base/login_form.html', context)
 
 def logout(request):
