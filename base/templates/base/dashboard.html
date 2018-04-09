@@ -8,22 +8,22 @@
             <div class="row">
                  <div class="col-md-3 col-sm-3 col-xs-6">
                     <div class="dashboard-div-wrapper bk-clr-one">
-                        <h3>8(placeholder)</h3>
+                        <h3>{{ temp_user.total_open_questions }}</h3>
                         <div class="progress progress-striped active">
                   <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%"></div>
                   </div>
-                         <h5>Total # of Questions </h5>
+                         <h5>Total # of OPEN Questions </h5>
                     </div>
                 </div>
 
                  <div class="col-md-3 col-sm-3 col-xs-6">
                     <div class="dashboard-div-wrapper bk-clr-two">
-                        <h3>10 (placeholder)</h3>
+                        <h3>{{ temp_user.total_students }}</h3>
                         <div class="progress progress-striped active">
                     <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
                   </div>                         
                 </div>
-                         <h5>Total # of Students </h5>
+                         <h5>Total # of Registered Students </h5>
                     </div>
                 </div>
 
@@ -35,7 +35,7 @@
                     </div>
                                              
                   </div>
-                         <h5>Simple Text Here </h5>
+                         <h5>Add Text Here </h5>
                     </div>
                 </div>
 
@@ -47,7 +47,7 @@
                       </div>
                                                
                     </div>
-                        <h5>Simple Text Here </h5>
+                        <h5>Add Text Here </h5>
                     </div>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                                       {% for q in latest_questions %}
                                         <tr>
                                             <td>{{ q.name }} </td>
-                                            <td> 9</td>
+                                            <td>{{ q.response_count }}</td>
                                             <td>{{ q.date }}</td>
                                             <td>Joy</td>
                                             <td> <a href="{% url 'base:answer_list_by_filter' mode='question' mode_id=q.id %}"  class="btn btn-xs btn-info" >View</a> </td>

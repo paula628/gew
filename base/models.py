@@ -28,9 +28,26 @@ class TempUser(models.Model):
     def __unicode__(self):
         return u'{} - {}'.format(self.user_type, self.name)
 
-    def latest_questions(self):
-        questions = self.question_set.filter(is_active=True).order_by('-date')[:3]
+
+    def all_questions(self):
+        questions = self.question_set.filter(is_active=True).order_by('-date')
         return questions
+
+    @property
+    def total_open_questions(self):
+        total = self.all_questions().filter(status='open').count()
+        return total
+
+    def latest_questions(self):
+        questions = self.all_questions()[:3]
+        return questions
+
+
+    @property
+    def total_students(self):
+        students = Answer.objects.filter(question__created_by__id=self.id,
+                                        is_active=True).values_list('created_by__id').distinct()
+        return students.count()
 
 
 class BaseModel(models.Model):
@@ -127,6 +144,11 @@ class Question(BaseModel):
         if not self.code:
             self.code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
         super(Question, self).save(*args, **kwargs)
+
+    @property
+    def response_count(self):
+        total = self.answer_set.filter(is_active=True)
+        return total.count()
 
 
 class Answer(BaseModel):

@@ -198,6 +198,7 @@ def answer_list(request, *args, **kwargs):
     context['title'] = title
     context['object_list'] = page_objects
     context['count'] = answers.count()
+    context['mode'] = mode
     return render(request, 'base/answer_list.html', context)
 
 
