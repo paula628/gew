@@ -43,7 +43,7 @@ class AnswerForm(forms.ModelForm):
         if not question.allow_anonymous:
             student = self.student if self.student else None
             answer = Answer.objects.filter(
-                                        created_by__name=student,
+                                        created_by__id=student,
                                         question__id=question.id,
                                         question__allow_anonymous=False, 
                                         is_active=True)
@@ -56,7 +56,7 @@ class AnswerForm(forms.ModelForm):
     def save(self, commit=True, *args, **kwargs):
         instance = super(AnswerForm, self).save(False)
         try:
-            user = TempUser.objects.get(name=self.student)
+            user = TempUser.objects.get(id=self.id)
             instance.created_by = user
         except:
             pass

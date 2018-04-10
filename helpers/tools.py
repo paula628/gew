@@ -13,9 +13,9 @@ def get_object_or_None(model, *args, **kwargs):
 
 
 def session_check(request):
-	if 'username' in request.session and request.session['username']:
-		username = request.session.get('username')
-		user = get_object_or_None(TempUser, name=username)
+	if 'user' in request.session and request.session['user']:
+		user_id = request.session.get('user')
+		user = get_object_or_None(TempUser, id=user_id)
 		return user
 	else:
 		return False

@@ -33,7 +33,7 @@ def login(request):
         if name:
             login = get_object_or_None(TempUser, name=name, user_type='t')
             if login:
-                request.session['username'] = login.name
+                request.session['user'] = login.id
                 request.session.set_expiry(6000)
                 return redirect('base:dashboard')
         elif code:
@@ -45,7 +45,7 @@ def login(request):
                     student_id = request.POST.get('student', None)
                     student = get_object_or_None(TempUser, id=student_id, user_type='s')
                     if student:
-                        request.session['student'] = student.name
+                        request.session['student'] = student.id
                         request.session.set_expiry(600)
                     else:
                         msg= "You can't be anonymous in that session."
@@ -59,7 +59,7 @@ def login(request):
     return render(request, 'base/login_form.html', context)
 
 def logout(request):
-    request.session['username'] = ''
+    request.session['user'] = ''
     request.session['student'] = ''
     return redirect('base:login')
 
@@ -97,23 +97,30 @@ def answer_page(request, question):
         'title': 'Answer Page',
         'form': AnswerForm(initial={'question':question})})
     if request.method == 'POST':
+        valid = False
         form = AnswerForm(request.POST)
         if not question.allow_anonymous:
             if student:
                 form = AnswerForm(request.POST, student=student)
+                valid = True
             else:
                 msg = 'Error! This question requires a username.'
                 context.update({'message':msg})
-        if form.is_valid():
-            instance = form.save(commit=False)
-            other_text = request.POST.get('other_text', None)
-            if other_text:
-                instance.note = other_text
-            form.save()
-            msg = 'Your answer has been recorded'
-            context.update({'message': msg })
+        else:
+            valid = True
+
+        if valid:
+            if form.is_valid():
+                instance = form.save(commit=False)
+                other_text = request.POST.get('other_text', None)
+                if other_text:
+                    instance.note = other_text
+                form.save()
+                msg = 'Your answer has been recorded'
+                context.update({'message': msg })
+
         context['form'] = form
-    return render(request, 'base/shapes_test.html', context)
+    return render(request, 'base/answer_page.html', context)
 
 
 ## Answers
@@ -137,7 +144,6 @@ def answers_by_question_graph(request, question_id):
             intensity_average = sum(intensity_list)/ len(intensity_list)
         else:
             intensity_average = 0
-
         averages.append(intensity_average)
         emotion_labels.append(k)
         colors.append(v)
@@ -171,7 +177,7 @@ def answer_list(request, *args, **kwargs):
     context['tags'] = tags
 
     title = 'All Answers'
-    answers = Answer.objects.filter(question__created_by__pk=user.id, is_active=True).order_by('-date')
+    answers = Answer.objects.filter(question__created_by__pk=user.id, is_active=True).order_by('-pk')
     date_from = request.GET.get('date_from', None)
     date_to = request.GET.get('date_to', None)
     if date_from:
