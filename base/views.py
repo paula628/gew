@@ -24,6 +24,10 @@ from .forms import QuestionForm, AnswerForm, TempUserForm
 
 def login(request):
     context = {}
+    if 'user' in request.session:
+        request['user'] = ''
+    if 'student' in request.session:
+        request['student'] = ''
     students = TempUser.objects.filter(user_type='s', is_active=True)
     context['students'] = students
     context['create_user_form'] = TempUserForm()
