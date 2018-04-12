@@ -30,6 +30,11 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+AUTHENTICATION_BACKENDS = [
+  'django.contrib.auth.backends.ModelBackend',
+  'lti_provider.auth.LTIBackend',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'base',
     'helpers',
+    'lti_provider',
 ]
 
 MIDDLEWARE = [
@@ -131,4 +137,23 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
+
+LTI_TOOL_CONFIGURATION = {
+    'title': 'Sample LTI Tool',
+    'description': 'This tool includes launch, navigation and assignments',
+    'launch_url': 'lti/',
+    'embed_url': '',  # @todo - add an editor embed example
+    'embed_icon_url': '',
+    'embed_tool_id': '',
+    'landing_url': '/',
+    'navigation': True,
+    'new_tab': True,
+    'course_aware': False,
+    'frame_width': 1024,
+    'frame_height': 1024,
+    'assignments': {
+        '1': '/assignment/1/',
+        '2': '/assignment/2/',
+    }
+}
 

@@ -1,4 +1,7 @@
-from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls import include, url
+from django.contrib import admin
+from django.views.generic.base import TemplateView
 
 from . import views
 
@@ -27,4 +30,11 @@ urlpatterns = [
     url(r'^student-responses/(?P<student_id>\w+)/$', views.answers_by_student, name='answers_by_student'),
     url(r'^student-list/$', views.student_list, name='student_list'),
     url(r'^student-responses/graphs/(?P<student_id>\w+)/$', views.answers_by_student_graph, name='answers_by_student_graph'),
+
+
+    url(r'^$', views.IndexView.as_view()),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^lti/', include('lti_provider.urls')),
+    url(r'^assignment/1/', views.LTIAssignment1View.as_view()),
+    url(r'^assignment/2/', views.LTIAssignment2View.as_view()),
 ]
